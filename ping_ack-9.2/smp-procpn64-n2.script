@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --mem=16g
+#SBATCH --nodes=2
+#SBATCH --output=smp-procpn64-n2-%j.out
+#SBATCH --ntasks-per-node=64
+#SBATCH --cpus-per-task=2
+#SBATCH --partition=cpu
+#SBATCH --account=mzu-delta-cpu
+#SBATCH --job-name=myjobtest
+#SBATCH --time=00:05:00
+#SBATCH --constraint="scratch"
+
+module load openmpi-5.0_beta/5.0.0rc9
+echo "job is starting +p2, ppn 01, n2, pemap 0-0 + commap 1-127"
+srun --mpi=pmi2 -n 128 pingack_smp ++ppn 1 +pemap 0-63 +commap 64-127
